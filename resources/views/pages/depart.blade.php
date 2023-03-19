@@ -64,8 +64,8 @@
                                     <td>{{ $depart->Num_courie }}</td>
                                     <td>{{ $depart->envoye_a }}</td>
                                     <td>{{ $depart->date_envoi }}</td>
-                                    <td>{{ $depart->objet }}</td>
-                                    <td>{{ $depart->nature }}</td>
+                                    <td>{{ $depart->objet }}</td> 
+                                    <td data-typeid="{{ $depart->type_id }}">{{ $depart->Type->name }}</td>
                                     <td id="file">{{ $depart->fichier }}</td>
                                     <td>
                                         {{-- <a class="btn btn-primary btn-sm"
@@ -144,44 +144,44 @@
                                                             {{-- {{ method_field('PUT') }} --}}
                                                             {{ method_field('PATCH') }}
                                                             <div class="row">
-                                                                <div class="col"> 
+                                                                <div class="col-md-3"> 
                                                                     <label for="">رقم المراسلة</label>
                                                                     <input class="form-control form-control-lg" type="text" hidden  name="id" value="">>
                                                                     <input class="form-control form-control-lg" type="text"  name="Num_courie"  value=""> 
                                                                 </div>
+                                                                <div class="col-md-4"> 
+                                                                    <label for="">تاريخ الارسال</label>
+                                                                    <input class="form-control form-control-lg" type="date"  name="date_envoi" value=""> 
+                                                                </div>
                                                                 
-                                                                <div class="col">
+                                                                <div class="col-md-5">
                                                                     <label for="">مرسلة الى</label>
                                                                     <input class="form-control form-control-lg" type="text"  name="envoye_a" value=""> 
                                                                 </div>
                                                             </div>
                                                             <br>
-                                                            <div class="row">
-                                                                <div class="col"> 
-                                                                    <label for="">تاريخ الارسال</label>
-                                                                    <input class="form-control form-control-lg" type="date"  name="date_envoi" value=""> 
-                                                                </div>
-                            
+                                                            <div class="row"> 
                                                                 <div class="col"> 
                                                                     <label for="">موضوع المراسلة</label>
                                                                     <input class="form-control form-control-lg" type="text"  name="objet" value=""> 
                                                                 </div>
                                                             </div>
                                                             <br>
-                                                            <div class="row">
-                                                               
+                                                            <div class="row">  
                                                                 <div class="col">
-                                                                    <label for="">طبيعة المراسلة</label>
-                                                                    <input class="form-control form-control-lg" type="text"  name="nature" value=""> 
+                                                                    <label for="">طبيعة المراسلة</label> 
+                                                                    <select class="form-control form-control-lg" name="type_id" id="typeid" >   
+                                                                        @foreach ($types as $type)
+                                                                           <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                                                       @endforeach 
+                                                                   </select>
                                                                 </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="row">
                                                                 <div class="col">
                                                                     <label for="" for="chooseFile">ملف المراسلة</label>
                                                                     <input class="form-control form-control-lg" type="file" name="file" id="chooseFile" value=""> 
                                                                 </div>
                                                             </div>
+                                                            <br> 
                                                             <button type="submit" class="btn btn-primary">تعديـل</button>
 
                                                         </form>
@@ -290,12 +290,17 @@
                             <form action="{{ route('cour_depart.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
-                                    <div class="col"> 
+                                    <div class="col-md-3"> 
                                         <label for="">رقم المراسلة</label>
                                         <input class="form-control form-control-lg" type="text"  name="Num_courie"> 
                                     </div>
                                     
-                                    <div class="col">
+                                    <div class="col-md-4"> 
+                                        <label for="">تاريخ الارسال</label>
+                                        <input class="form-control form-control-lg" type="date"  name="date_envoi"> 
+                                    </div>
+
+                                    <div class="col-md-5">
                                         <label for="">مرسلة الى</label>
                                         <input class="form-control form-control-lg" type="text"  name="envoye_a"> 
                                     </div>
@@ -303,32 +308,26 @@
                                 <br>
                                 <div class="row">
                                     <div class="col"> 
-                                        <label for="">تاريخ الارسال</label>
-                                        <input class="form-control form-control-lg" type="date"  name="date_envoi"> 
-                                    </div>
-
-                                    <div class="col"> 
                                         <label for="">موضوع المراسلة</label>
                                         <input class="form-control form-control-lg" type="text"  name="objet"> 
                                     </div>
                                 </div>
                                 <br>
-                                <div class="row">
-                                   
+                                <div class="row"> 
                                     <div class="col">
                                         <label for="">طبيعة المراسلة</label>
-                                        <input class="form-control form-control-lg" type="text"  name="nature"> 
+                                        <select class="form-control form-control-lg" name="type_id" id="" >   
+                                            @foreach ($types as $type)
+                                               <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                           @endforeach 
+                                       </select> 
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
                                     <div class="col">
                                         <label for="" for="chooseFile">ملف المراسلة</label>
                                         <input class="form-control form-control-lg" type="file" name="file" id="chooseFile"> 
                                     </div>
                                 </div>
-                                <br>
-                                <br>
+                                <br>  
                                 
                                 <button type="submit" class="btn btn-primary">إضــافة</button>
  
@@ -401,12 +400,12 @@ $('#edit_mdl input[name="Num_courie"]').val($('#depart_' + id).children().eq(0).
 $('#edit_mdl input[name="envoye_a"]').val($('#depart_' + id).children().eq(1).html());
 $('#edit_mdl input[name="date_envoi"]').val($('#depart_' + id).children().eq(2).html());
 $('#edit_mdl input[name="objet"]').val($('#depart_' + id).children().eq(3).html());
-$('#edit_mdl input[name="nature"]').val($('#depart_' + id).children().eq(4).html()); 
+$('#edit_mdl #typeid').val($('#depart_' + id).children().eq(4).data('typeid')); 
 $('#edit_mdl input[name="file"]').data($('#depart_' + id).children().eq(5).html()); 
 // $('#edit_mdl input[name="objet"]').val($('#depart_' + id).children().eq(5).data('formatioid'));
 $('#edit_mdl').modal('show');
 }
-//   id Num_courie envoye_a date_envoi objet nature file
+//   id Num_courie envoye_a date_envoi objet type_id file
 function showDelete(id) {  
 var form = document.getElementById("destroy_frm");
 var action ="{{ route('cour_depart.destroy',"") }}/"+id;

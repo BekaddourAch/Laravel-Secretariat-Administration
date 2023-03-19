@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Depart;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class DepartController extends Controller
@@ -17,7 +18,8 @@ class DepartController extends Controller
         //2
         
         $departs=Depart::all();
-        return view('pages.depart', compact('departs'));
+        $types=Type::all();
+        return view('pages.depart', compact('departs','types'));
     }
 
     /**
@@ -49,7 +51,7 @@ class DepartController extends Controller
                 $depart->envoye_a=$request->envoye_a;
                 $depart->date_envoi=$request->date_envoi;
                 $depart->objet=$request->objet;
-                $depart->nature=$request->nature;
+                $depart->type_id=$request->type_id;
                 
                 $fileName = time().'_'.$request->file->getClientOriginalName();
                 $filePath = $request->file('file')->storeAs('depart', $fileName, 'public');
@@ -98,7 +100,7 @@ class DepartController extends Controller
                 $depart->envoye_a=$request->envoye_a;
                 $depart->date_envoi=$request->date_envoi;
                 $depart->objet=$request->objet;
-                $depart->nature=$request->nature;
+                $depart->type_id=$request->type_id;
                 if($request->file()) {
                     $fileName = time().'_'.$request->file->getClientOriginalName();
                     $filePath = $request->file('file')->storeAs('depart', $fileName, 'public');
