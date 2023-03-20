@@ -73,7 +73,7 @@
                                 <th>تاريخ التحويل</th>
                                 <th>وجوب الرد</th>
                                 <th>تاريخ الرد</th> 
-                                <th Width="30px"> الملف</th> 
+                                {{-- <th Width="30px"> الملف</th>  --}}
                                 <th>عمليات</th>
                             </tr>
                         </thead>
@@ -91,7 +91,7 @@
                                     <td>{{ $arrivee->date_transfert }}</td>
                                     <td>{{ $arrivee->obligation_repanse }}</td>
                                     <td>{{ $arrivee->date_reponse }}</td>
-                                    <td id="file">{{ $arrivee->fichier }}</td>
+                                    {{-- <td id="file">{{ $arrivee->fichier }}</td> --}}
                                     <td>
                                         {{-- <a class="btn btn-primary btn-sm"
                                             href="{{ route('plannings.show', $arrivee->id, $arrivee->nom) }}"> --}}
