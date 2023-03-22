@@ -82,8 +82,8 @@
                                     <td>{{ $bordereau->date_envoi }}</td>
                                     <td>{{ $bordereau->envoye_a }}</td>
                                     <td>{{ $bordereau->objet }}</td>
-                                    <td>{{ $bordereau->type }}</td>
-                                    <td>{{ $bordereau->tranfere_a }}</td>
+                                    <td data-typeid="{{ $bordereau->type_id }}">{{ $bordereau->Type->name }}</td>
+                                    <td data-bureauid="{{ $bordereau->bureau_id }}">{{ $bordereau->Bureau->name }}</td>
                                     <td>{{ $bordereau->date_transfert }}</td>
                                     <td>{{ $bordereau->obligation_repanse }}</td>
                                     <td>{{ $bordereau->date_reponse }}</td>
@@ -194,8 +194,11 @@
                                     </div>
                                     <div class="col">
                                         <label for="">طبيعة المراسلة</label>
-                                        <input class="form-control form-control-lg" type="text" name="type"
-                                            value="">
+                                        <select class="form-control form-control-lg" name="type_id" id="typeid" >   
+                                            @foreach ($types as $type)
+                                               <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                           @endforeach 
+                                       </select>
                                     </div>
                                 </div>
                                 <br>
@@ -203,8 +206,11 @@
                                     <div class="col">
                                         <label for="">الجهة المحول إليها
                                         </label>
-                                        <input class="form-control form-control-lg" type="text" name="tranfere_a"
-                                            value="">
+                                        <select class="form-control form-control-lg" name="bureau_id" id="bureauid">
+                                            @foreach ($bureaux as $bureau)
+                                               <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
+                                           @endforeach 
+                                       </select>
                                     </div>
                                     <div class="col">
                                         <label for="">تاريخ التحويل </label>
@@ -215,14 +221,16 @@
                                 <br>
                                 <div class="row">
                                     <div class="col">
-                                        <label for="">وجوب الرد على المراسلة ؟</label>
-                                        <input class="form-control form-control-lg" type="text"
-                                            name="obligation_repanse" value="">
+                                        <div class="custom-control custom-checkbox" style="padding: 2.5rem 0 2rem 1.5rem;">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox1" name="obligation_repanse" value="1" checked="">
+                                            <label for="customCheckbox1" class="custom-control-label">وجوب الرد على المراسلة ؟</label>
+                                          </div>
                                     </div>
                                     <div class="col">
-                                        <label for="">تاريخ الرد</label>
-                                        <input class="form-control form-control-lg" type="date" name="date_reponse"
-                                            value="">
+                                        <div id="datelbl">
+                                            <label for="">تاريخ الرد</label>
+                                            <input class="form-control form-control-lg" type="date"  name="date_reponse" id="datepickerresponse">
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <label for="" for="chooseFile">ملف المراسلة</label>
@@ -363,8 +371,13 @@
                                         <input class="form-control form-control-lg" type="text" name="objet">
                                     </div>
                                     <div class="col">
-                                        <label for="">طبيعة المراسلة</label>
-                                        <input class="form-control form-control-lg" type="text" name="type">
+                                        <label for="">طبيعة المراسلة</label> 
+                                        <select class="form-control form-control-lg" name="type_id" id="" >  
+                                            
+                                            @foreach ($types as $type)
+                                               <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                           @endforeach 
+                                       </select>
                                     </div>
                                 </div>
                                 <br>
@@ -372,7 +385,11 @@
                                     <div class="col">
                                         <label for="">الجهة المحول إليها
                                         </label>
-                                        <input class="form-control form-control-lg" type="text" name="tranfere_a">
+                                        <select class="form-control form-control-lg" name="bureau_id" id=""> 
+                                             @foreach ($bureaux as $bureau)
+                                                <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
+                                            @endforeach 
+                                        </select>
                                     </div>
                                     <div class="col">
                                         <label for="">تاريخ التحويل </label>
@@ -381,15 +398,19 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col">
-                                        <label for="">وجوب الرد على المراسلة ؟</label>
-                                        <input class="form-control form-control-lg" type="text"
-                                            name="obligation_repanse">
+                                    <div class="col"> 
+                                        <div class="custom-control custom-checkbox" style="padding: 2.5rem 0 2rem 1.5rem;">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox11" name="obligation_repanse" value="1" checked="">
+                                            <label for="customCheckbox11" class="custom-control-label">وجوب الرد على المراسلة ؟</label>
+                                          </div>
+                                        {{-- <input class="form-control form-control-lg" type="text"  name="obligation_repanse">  --}}
                                     </div>
                                     <div class="col">
-                                        <label for="">تاريخ الرد</label>
-                                        <input class="form-control form-control-lg" type="date" name="date_reponse">
-                                    </div>
+                                        <div id="datelbl1">
+                                            <label for="">تاريخ الرد</label>
+                                            <input class="form-control form-control-lg" type="date"  name="date_reponse" id="datepickerresponse1">
+                                        </div>
+                                    </div> 
                                     <div class="col">
                                         <label for="" for="chooseFile">ملف المراسلة</label>
                                         <input class="form-control form-control-lg" type="file" name="file"
@@ -474,8 +495,8 @@
             $('#edit_mdl input[name="envoye_a"]').val($('#bordereau_' + id).children().eq(3).html());
 
             $('#edit_mdl input[name="objet"]').val($('#bordereau_' + id).children().eq(4).html());
-            $('#edit_mdl input[name="type"]').val($('#bordereau_' + id).children().eq(5).html());
-            $('#edit_mdl input[name="tranfere_a"]').val($('#bordereau_' + id).children().eq(6).html());
+            $('#edit_mdl #typeid').val($('#bordereau_' + id).children().eq(5).data('typeid'));
+            $('#edit_mdl #bureauid').val($('#bordereau_' + id).children().eq(6).data('bureauid'));
             $('#edit_mdl input[name="date_transfert"]').val($('#bordereau_' + id).children().eq(7).html());
 
             $('#edit_mdl input[name="obligation_repanse"]').val($('#bordereau_' + id).children().eq(8).html());
@@ -507,4 +528,22 @@
         }
      
     </script>
+    <script>
+        $(document).ready(function(){
+            $("#customCheckbox1").click(function(){
+                // $("#datepickerresponse").toggle('fast',()=>{$("#datepickerresponse").attr( "disabled", false )});
+                $("#datelbl").toggle('fast',()=>{$("#datelbl").attr( "disabled", false )});
+            }); 
+         
+        });
+        </script>
+    <script>
+        $(document).ready(function(){
+            $("#customCheckbox11").click(function(){
+                // $("#datepickerresponse1").toggle('fast',()=>{$("#datepickerresponse1").attr( "disabled", false )});
+                $("#datelbl1").toggle('fast',()=>{$("#datelbl1").attr( "disabled", false )});
+            });  
+         
+        });
+        </script>
 @endsection

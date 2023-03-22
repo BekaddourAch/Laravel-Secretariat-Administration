@@ -247,7 +247,6 @@
                                     <label for="">الجهة المحول إليها		
                                     </label>
                                     <select class="form-control form-control-lg" name="bureau_id" id="bureauid">  
-                                        
                                          @foreach ($bureaux as $bureau)
                                             <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
                                         @endforeach 
@@ -262,7 +261,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="custom-control custom-checkbox" style="padding: 2.5rem 0 2rem 1.5rem;">
-                                        <input class="custom-control-input" type="checkbox" id="customCheckbox1" name="obligation_repanse" value="option1" checked="">
+                                        <input class="custom-control-input" type="checkbox" id="customCheckbox1" name="obligation_repanse" value="1" checked="">
                                         <label for="customCheckbox1" class="custom-control-label">وجوب الرد على المراسلة ؟</label>
                                       </div>
                                 </div>
@@ -400,9 +399,7 @@
                                     <div class="col"> 
                                         <label for="">الجهة المحول إليها		
                                         </label>
-                                        {{-- <input class="form-control form-control-lg" type="text"  name="tranfere_a">  --}}
-                                        <select class="form-control form-control-lg" name="bureau_id" id="">  
-                                            
+                                        <select class="form-control form-control-lg" name="bureau_id" id=""> 
                                              @foreach ($bureaux as $bureau)
                                                 <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
                                             @endforeach 

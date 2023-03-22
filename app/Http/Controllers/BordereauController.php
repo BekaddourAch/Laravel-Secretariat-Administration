@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bordereau;
+use App\Models\Bureau;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class BordereauController extends Controller
@@ -15,7 +17,9 @@ class BordereauController extends Controller
     public function index()
     {
         $bordereaus=Bordereau::all();
-        return view('pages.bordereau', compact('bordereaus'));
+        $bureaux=Bureau::all();
+        $types=Type::all();
+        return view('pages.bordereau', compact('bordereaus','bureaux','types'));
     }
 
     /**
@@ -47,8 +51,8 @@ class BordereauController extends Controller
                 $bordereau->date_envoi=$request->date_envoi;
                 $bordereau->envoye_a=$request->envoye_a;
                 $bordereau->objet=$request->objet;
-                $bordereau->type=$request->type;
-                $bordereau->tranfere_a=$request->tranfere_a;
+                $bordereau->type_id=$request->type_id;
+                $bordereau->bureau_id=$request->bureau_id;
                 $bordereau->date_transfert=$request->date_transfert;
                 $bordereau->obligation_repanse=$request->obligation_repanse;
                 $bordereau->date_reponse=$request->date_reponse;
@@ -101,8 +105,8 @@ class BordereauController extends Controller
         $bordereau->date_envoi=$request->date_envoi;
         $bordereau->envoye_a=$request->envoye_a;
         $bordereau->objet=$request->objet;
-        $bordereau->type=$request->type;
-        $bordereau->tranfere_a=$request->tranfere_a;
+        $bordereau->type_id=$request->type_id;
+        $bordereau->bureau_id=$request->bureau_id;
         $bordereau->date_transfert=$request->date_transfert;
         $bordereau->obligation_repanse=$request->obligation_repanse;
         $bordereau->date_reponse=$request->date_reponse;
