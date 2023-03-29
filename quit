@@ -1,0 +1,90 @@
+[33mcommit a800040c2f20931672ab1bdc69efea54c386ee3a[m[33m ([m[1;36mHEAD[m[33m)[m
+Merge: 81a7e76 c4427e1
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Wed Mar 29 18:24:22 2023 +0100
+
+    delete readme file
+
+[33mcommit c4427e18d30783ec6c7a11d5189fb8aa7c49f4d2[m[33m ([m[1;31morigin/oioi[m[33m, [m[1;32moioi[m[33m)[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Wed Mar 29 12:05:37 2023 +0100
+
+    add # to the title in readme.md
+
+[33mcommit f30c9faece1ff6afc1c5941fad493f46b8a6b99e[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Wed Mar 29 11:52:56 2023 +0100
+
+    Editing the readme.md
+
+[33mcommit 9e5f3d9c71bc3832c6355ef5a1562924a629e307[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Thu Mar 23 12:50:49 2023 +0100
+
+    delete the arabic href breadcrumb
+
+[33mcommit a380bbdc0fa9e658801a2ba3d55f565f3fe03b65[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Thu Mar 23 12:45:59 2023 +0100
+
+    adding new breadcrumb href for home in arabic
+
+[33mcommit f4672c4e9542c7533ecc487cf4ae7c27c8fdada7[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Thu Mar 23 12:20:24 2023 +0100
+
+    add breadcrumb
+
+[33mcommit 695ef39dd53bbec951f8db2c84c712f664829861[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 16:19:13 2023 +0100
+
+    delete href title and change h1 to h2 of the title
+
+[33mcommit 70f1f30c203094b19da6f26071ab92abbfc32470[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 16:10:59 2023 +0100
+
+    change the title to a link with adding a font icon
+
+[33mcommit daafa91431b12d758abebaf886d6c2c700ab9843[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 16:03:03 2023 +0100
+
+    add file 11.txt and edtit the title by adding tous at it
+
+[33mcommit 05d91132e723fa470d63175c4145b1c1e241a707[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 15:26:58 2023 +0100
+
+    add the 1111.txt file
+
+[33mcommit 560f34c54945bfc637d33ea09b1679a92d0de345[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 15:20:47 2023 +0100
+
+    add all to title
+
+[33mcommit 9975d45b4b797107adecbc58f638e9e7dac0fd33[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Mon Mar 20 11:13:23 2023 +0100
+
+    modifying the title of the page
+
+[33mcommit 7d677432c855af1018fee0b09fdfe332546442e4[m
+Author: BekaddourAch <bekaddour.mohammedachraf@gmail.com>
+Date:   Sun Mar 19 20:54:28 2023 +0100
+
+    create the main Project Structure
+
+[33mcommit 81a7e76b3229b2c63958809d09bc4c7e3c583af8[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/ioio[m[33m)[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Sun Mar 19 20:41:03 2023 +0100
+
+    Update README.md
+
+[33mcommit fea8debc01b99d4ead05078d9a10e85b9ba49af0[m
+Author: Bekaddour Mohammed Achraf <115998509+BekaddourAch@users.noreply.github.com>
+Date:   Sun Mar 19 20:37:43 2023 +0100
+
+    Initial commit
