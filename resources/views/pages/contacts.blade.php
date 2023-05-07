@@ -232,28 +232,28 @@
                                                                     
                                                                                     </p>
                                                                                     <span class="badge badge-success"
-                                                                                            style="font-size:18px;" id="telephone">{{ $contact->telephone }}</span>
+                                                                                            style="font-size:18px;" id="telephone"></span>
 
                                                                                     <span class="badge badge-warning"
-                                                                                            style="font-size:18px;" id="telephone2">{{ $contact->telephone2 }}</span>
+                                                                                            style="font-size:18px;" id="telephone2"></span>
                                                                                     
                                                                                     <hr>
                                                                                     <strong><i class="fas fa-fax mr-1"></i></i> Fax</strong>
                                                                                     </p>
                                                                                     <span class="badge badge-info"
-                                                                                            style="font-size:18px;" id="fax">{{ $contact->fax }}</span>
+                                                                                            style="font-size:18px;" id="fax"></span>
                                                                                     
                                                                                     <hr>
                                                                                     <strong><i class="fas fa-envelope mr-1"></i> Emails</strong>
                                                                                         </p>
                                                                                     <span class="badge badge-success"
-                                                                                            style="font-size:18px;" id="email">{{ $contact->email }}</span>
+                                                                                            style="font-size:18px;" id="email"></span>
                                                                                     <span class="badge badge-warning"
-                                                                                            style="font-size:18px;" id="email2">{{ $contact->email2 }}</span>
+                                                                                            style="font-size:18px;" id="email2"></span>
 
                                                                                     <hr>
                                                                                     <strong><i class="fas fa-map-marker-alt mr-1"></i> Adresse</strong>
-                                                                                    <p class="text-muted" id="adresse">{{ $contact->adresse }}</p>
+                                                                                    <p class="text-muted" id="adresse"></p>
                                                                                 
                                                                 
                                                                                 
@@ -297,7 +297,7 @@
                                                             @csrf_field {{ method_field('delete') }}
 
                                                             <input class="form-control form-control-lg" type="hidden"
-                                                                value="{{ $contact->id }}" name="id">
+                                                                value="" name="id" id="id_contact">
                                                             <br>
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         </form>
@@ -461,7 +461,7 @@
         var form = document.getElementById("destroy_frm");
         var action = "{{ route('contacts.destroy', '') }}/" + id;
         form.action = action;
-        $('#delete_mdl #contacts_').val(id);
+        $('#delete_mdl #id_contact').val(id);
         jQuery.noConflict();
         $('#delete_mdl').modal('show');
         }

@@ -14,8 +14,7 @@
     </ul>
     <p style="text-align:center" >
       
-ديوان الترقية والتسيير العقاري لولاية غرداية
-    </p>
+      ادارة الامانة العامة    </p>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->

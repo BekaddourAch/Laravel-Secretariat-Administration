@@ -12,8 +12,8 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
 
-                    
-                        <h2 class="m-0">Tous courriers arrivée كل البريد الوارد</h2>  
+
+                    <h2 class="m-0">Tous courriers arrivée كل البريد الوارد</h2>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -32,14 +32,25 @@
     <section class="content">
 
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <a class="btn btn-app bg-success" data-toggle="modal" {{-- data-target="#modal-lg" --}} onclick="showAdd()">
+                        {{-- <span class="badge bg-purple">12 arrivees</span> --}}
+                        <i class="fas fa-plus"></i> Ajouter إضــافة
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <label for="">طبيعة المراسلة</label> 
+                    <select class="form-control form-control-lg" name="fltr_type_id" id="fltr_type" onchange="filter_type(this)">
+                        <option value="0"> كل الأنواع</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}"> {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-            <a class="btn btn-app bg-success" data-toggle="modal" 
-            {{-- data-target="#modal-lg" --}}
-            onclick="showAdd()"
-            >
-                {{-- <span class="badge bg-purple">12 arrivees</span> --}}
-                <i class="fas fa-plus"></i> Ajouter إضــافة
-            </a>
             {{-- <a class="btn btn-app bg-warning">
                 <span class="badge bg-info">0</span>
                 <i class="fas fa-envelope"></i> Planning
@@ -74,12 +85,12 @@
                                 <th>تحول الى</th>
                                 <th>تاريخ التحويل</th>
                                 <th>وجوب الرد</th>
-                                <th>تاريخ الرد</th> 
+                                <th>تاريخ الرد</th>
                                 {{-- <th Width="30px"> الملف</th>  --}}
                                 <th>عمليات</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="results">
                             @foreach ($arrivees as $arrivee)
                                 <tr id='arivee_{{ $arrivee->id }}'>
                                     <td>{{ $arrivee->Num_courie }}</td>
@@ -91,34 +102,33 @@
                                     <td data-bureauid="{{ $arrivee->bureau_id }}">{{ $arrivee->Bureau->name }}</td>
                                     {{-- <td>{{ $arrivee->tranfere_a }}</td> --}}
                                     <td>{{ $arrivee->date_transfert }}</td>
-                                    <td>{{ $arrivee->obligation_repanse }}</td>
+                                    <td data-obligation_repance="{{ $arrivee->obligation_repanse }}">
+                                        @if ($arrivee->obligation_repanse == 1)
+                                            <small class="badge badge-warning"> نعم</small>
+                                        @else
+                                            <small class="badge badge-secondary"> لا</small>
+                                        @endif
+
+                                    </td>
+
                                     <td>{{ $arrivee->date_reponse }}</td>
                                     {{-- <td id="file">{{ $arrivee->fichier }}</td> --}}
-                                    <td>
-                                        {{-- <a class="btn btn-primary btn-sm"
-                                            href="{{ route('plannings.show', $arrivee->id, $arrivee->nom) }}"> --}}
-                                        <a class="btn btn-success btn-sm" onclick="showpdf(this);" href="javascript:void(0);" data-path="{{ asset(Storage::url("arrivee/".$arrivee->fichier)) }}">
-                                            <i class="fas fa-file"> </i>  عرض
+                                    <td> 
+                                        <a class="btn btn-success btn-sm" onclick="showpdf(this);"
+                                            href="javascript:void(0);"
+                                            data-path="{{ asset(Storage::url('arrivee/' . $arrivee->fichier)) }}">
+                                            <i class="fas fa-file"> </i> عرض
                                         </a>
-                                        <a class="btn btn-info btn-sm" onclick="showEdit({{ $arrivee->id }})" id="btn_edit"> <i class="fas fa-pencil-alt"> </i> Edit  </a> 
-                                        <a class="btn btn-danger btn-sm" onclick="showDelete({{ $arrivee->id }})"  id="btn_delete"> <i class="fas fa-trash"> </i> Delete  </a>
-                                        {{-- <a class="btn btn-info btn-sm" data-toggle="modal"
-                                            data-target="#edit{{ $arrivee->id }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i> 
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#delete{{ $arrivee->id }}">
-                                            <i class="fas fa-trash">
-                                            </i> 
-                                        </a> --}}
+                                        <a class="btn btn-info btn-sm" onclick="showEdit({{ $arrivee->id }})"
+                                            id="btn_edit"> <i class="fas fa-pencil-alt"> </i> Edit </a>
+                                        <a class="btn btn-danger btn-sm" onclick="showDelete({{ $arrivee->id }})"
+                                            id="btn_delete"> <i class="fas fa-trash"> </i> Delete </a>
                                     </td>
 
                                     </td>
                                 </tr>
-                                 
-                                @endforeach
-
+                            @endforeach
+ 
                         </tbody>
                         <tfoot>
                             <tr>
@@ -131,13 +141,14 @@
                                 <th>تحول الى</th>
                                 <th>تاريخ التحويل</th>
                                 <th>وجوب الرد</th>
-                                <th>تاريخ الرد</th> 
+                                <th>تاريخ الرد</th>
                                 {{-- <th> الملف</th>  --}}
                                 <th>عمليات</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
+                    {{ $arrivees->links() }}
                 <!-- /.card-body -->
             </div>
             <!-- /.row (main row) -->
@@ -146,194 +157,198 @@
     <!-- /.content -->
     </div>
     {{-- ---------------------------------------------------------------------- Show PDF------------------------------------------------------------------------------------- --}}
-<div class="modal fade" id="showpdfmodal"  >
-    <div class="modal-dialog modal-xl" style="width:1140px; height:900px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="file_title">  </h4>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"> 
-                {{-- {{ $arrivee->fichier  }} --}}
-                
-                {{-- <iframe src="{{ asset('cv1_28.pdf') }}" width="50%" height="600">
+    <div class="modal fade" id="showpdfmodal">
+        <div class="modal-dialog modal-xl" style="width:1140px; height:900px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="file_title"> </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{-- {{ $arrivee->fichier  }} --}}
+
+                    {{-- <iframe src="{{ asset('cv1_28.pdf') }}" width="50%" height="600">
                     This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('cv1_28.pdf') }}">Download PDF</a>
                 </iframe> --}}
-                {{-- <embed src="{{ $arrivee->fichier }}" width="600" height="500" alt="pdf" />  url('show-pdf', $arrivee->id)--}}
-                <iframe id="showmodaliframe" src=""
-                    style="width:1100px; height:600px;"
-                    frameborder="0">
-                </iframe>
+                    {{-- <embed src="{{ $arrivee->fichier }}" width="600" height="500" alt="pdf" />  url('show-pdf', $arrivee->id) --}}
+                    <iframe id="showmodaliframe" src="" style="width:1100px; height:600px;" frameborder="0">
+                    </iframe>
+                </div>
+                <div class="modal-footer justify-content-between">
+                </div>
             </div>
-            <div class="modal-footer justify-content-between">
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-{{-- ---------------------------------------------------------------------- MODAL EDIT------------------------------------------------------------------------------------- --}}
-<div class="modal fade" id="edit_mdl">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" >تعديل البريد الوارد </h4>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Modifier une arrivee</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="" id="update_frm" 
-                            method="POST" enctype="multipart/form-data"> @csrf
-                            {{-- 
+    <!-- /.modal -->
+    {{-- ---------------------------------------------------------------------- MODAL EDIT------------------------------------------------------------------------------------- --}}
+    <div class="modal fade" id="edit_mdl">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">تعديل البريد الوارد </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Modifier une arrivee</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="" id="update_frm" method="POST" enctype="multipart/form-data"> @csrf
+                                {{-- 
                             {{ method_field('Delete') }} --}}
-                            {{-- {{ method_field('PUT') }} --}}
-                            
-                            {{ method_field('PATCH') }}
-                            {{-- @method('PUT') --}}
-                            <div class="row">
-                                <div class="col"> 
-                                    <label for="">رقم المراسلة</label>
-                                    <input class="form-control form-control-lg" type="text"  name="id" hidden value=""> 
-                                    <input class="form-control form-control-lg" type="text"  name="Num_courie" value=""> 
+                                {{-- {{ method_field('PUT') }} --}}
+
+                                {{ method_field('PATCH') }}
+                                {{-- @method('PUT') --}}
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">رقم المراسلة</label>
+                                        <input class="form-control form-control-lg" type="text" name="id" hidden
+                                            value="">
+                                        <input class="form-control form-control-lg" type="text" name="Num_courie"
+                                            value="">
+                                    </div>
+                                    <div class="col">
+                                        <label for="">المرسل / الجهة المرسلة</label>
+                                        <input class="form-control form-control-lg" type="text" name="emetteur"
+                                            value="">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label for="">المرسل / الجهة المرسلة</label>
-                                    <input class="form-control form-control-lg" type="text"  name="emetteur" value=""> 
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col"> 
-                                    <label for="">تاريخ الارسال</label>
-                                    <input class="form-control form-control-lg" type="date"  name="date_envoi" value=""> 
-                                </div>
-                                {{-- <div class="col">
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">تاريخ الارسال</label>
+                                        <input class="form-control form-control-lg" type="date" name="date_envoi"
+                                            value="">
+                                    </div>
+                                    {{-- <div class="col">
                                     <label for="">مرسلة الى</label>
                                     <input class="form-control form-control-lg" type="text"  name="envoye_a" value=""> 
                                 </div> --}}
-                                <div class="col">
-                                    <label for="">نوع المراسلة</label>
-                                    <select class="form-control form-control-lg" name="type_id" id="typeid" >   
-                                        @foreach ($types as $type)
-                                           <option value="{{ $type->id }}"> {{ $type->name }}</option>
-                                       @endforeach 
-                                   </select>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col"> 
-                                    <label for="">موضوع المراسلة</label>
-                                    <input class="form-control form-control-lg" type="text"  name="objet" value=""> 
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col"> 
-                                    <label for="">الجهة المحول إليها		
-                                    </label>
-                                    <select class="form-control form-control-lg" name="bureau_id" id="bureauid">  
-                                         @foreach ($bureaux as $bureau)
-                                            <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
-                                        @endforeach 
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <label for="">تاريخ التحويل	    </label>
-                                    <input class="form-control form-control-lg" type="date"  name="date_transfert" value=""> 
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="custom-control custom-checkbox" style="padding: 2.5rem 0 2rem 1.5rem;">
-                                        <input class="custom-control-input" type="checkbox" id="customCheckbox1" name="obligation_repanse" value="1" checked="">
-                                        <label for="customCheckbox1" class="custom-control-label">وجوب الرد على المراسلة ؟</label>
-                                      </div>
-                                </div>
-                                <div class="col">
-                                    <div id="datelbl">
-                                        <label for="">تاريخ الرد</label>
-                                        <input class="form-control form-control-lg" type="date"  name="date_reponse" id="datepickerresponse">
+                                    <div class="col">
+                                        <label for="">نوع المراسلة</label>
+                                        <select class="form-control form-control-lg" name="type_id" id="typeid">
+                                            @foreach ($types as $type)
+                                                <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <label for="chooseFile" for="chooseFile">ملف المراسلة</label>
-                                    <input class="form-control form-control-lg" type="file" name="file" id="chooseFile" value="" text=""> 
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">موضوع المراسلة</label>
+                                        <input class="form-control form-control-lg" type="text" name="objet"
+                                            value="">
+                                    </div>
                                 </div>
-                            </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">الجهة المحول إليها
+                                        </label>
+                                        <select class="form-control form-control-lg" name="bureau_id" id="bureauid">
+                                            @foreach ($bureaux as $bureau)
+                                                <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="">تاريخ التحويل </label>
+                                        <input class="form-control form-control-lg" type="date" name="date_transfert"
+                                            value="">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="custom-control custom-checkbox"
+                                            style="padding: 2.5rem 0 2rem 1.5rem;">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox1"
+                                                name="obligation_repanse" value="1" checked="">
+                                            <label for="customCheckbox1" class="custom-control-label">وجوب الرد على
+                                                المراسلة ؟</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div id="datelbl">
+                                            <label for="">تاريخ الرد</label>
+                                            <input class="form-control form-control-lg" type="date"
+                                                name="date_reponse" id="datepickerresponse">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="chooseFile" for="chooseFile">ملف المراسلة</label>
+                                        <input class="form-control form-control-lg" type="file" name="file"
+                                            id="chooseFile" value="" text="">
+                                    </div>
+                                </div>
 
-                            <br>
-                            <br>
-                            <button type="submit" class="btn btn-primary">تعديــل</button>
+                                <br>
+                                <br>
+                                <button type="submit" class="btn btn-primary">تعديــل</button>
 
-                        </form>
+                            </form>
 
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                </div>
+                <div class="modal-footer justify-content-between">
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-{{-- ---------------------------------------------------------------------- Modal Delete  ------------------------------------------------------------------------------------- --}}
+    <!-- /.modal -->
+    {{-- ---------------------------------------------------------------------- Modal Delete  ------------------------------------------------------------------------------------- --}}
 
-<div class="modal fade" id="delete_mdl">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Large Modal</h4>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Supprimer une arrivee</h3>
-                    </div>
-                    <div class="card-body">
-                        {{-- <form action="{{ route('cour_arrivee.destroy', $arrivee->id) }}" --}}
-                        <form action="" id="destroy_frm"
-                            method="POST" enctype="multipart/form-data"> @csrf
-                            @csrf_field {{ method_field('delete') }}
+    <div class="modal fade" id="delete_mdl">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Large Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Supprimer une arrivee</h3>
+                        </div>
+                        <div class="card-body">
+                            {{-- <form action="{{ route('cour_arrivee.destroy', $arrivee->id) }}" --}}
+                            <form action="" id="destroy_frm" method="POST" enctype="multipart/form-data"> @csrf
+                                @csrf_field {{ method_field('delete') }}
 
-                            <input class="form-control form-control-lg" type="hidden"
-                                value="" name="id" id="arrivee_id">
-                            <br>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form> 
+                                <input class="form-control form-control-lg" type="hidden" value="" name="id"
+                                    id="arrivee_id">
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                </div>
+                <div class="modal-footer justify-content-between">
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+    <!-- /.modal -->
 
-{{-- ---------------------------------------------------------------------- Modal ADD  ------------------------------------------------------------------------------------- --}}
+    {{-- ---------------------------------------------------------------------- Modal ADD  ------------------------------------------------------------------------------------- --}}
 
     <div class="modal fade" id="modal-lg">
         <div class="modal-dialog modal-lg">
@@ -350,23 +365,24 @@
                             <h3 class="card-title">Ajouter une arrivée</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('cour_arrivee.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('cour_arrivee.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
-                                    <div class="col"> 
+                                    <div class="col">
                                         <label for="">رقم المراسلة</label>
-                                        <input class="form-control form-control-lg" type="text"  name="Num_courie"> 
+                                        <input class="form-control form-control-lg" type="text" name="Num_courie">
                                     </div>
                                     <div class="col">
                                         <label for="">المرسل / الجهة المرسلة</label>
-                                        <input class="form-control form-control-lg" type="text"  name="emetteur">
+                                        <input class="form-control form-control-lg" type="text" name="emetteur">
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col"> 
+                                    <div class="col">
                                         <label for="">تاريخ الارسال</label>
-                                        <input class="form-control form-control-lg" type="date"  name="date_envoi"> 
+                                        <input class="form-control form-control-lg" type="date" name="date_envoi">
                                     </div>
                                     {{-- <div class="col">
                                         <label for="">مرسلة الى</label>
@@ -375,64 +391,69 @@
                                     <div class="col">
                                         <label for="">طبيعة المراسلة</label>
                                         {{-- <input class="form-control form-control-lg" type="text"  name="nature"> --}}
-                                        <select class="form-control form-control-lg" name="type_id" id="" >  
-                                            
+                                        <select class="form-control form-control-lg" name="type_id" id="">
+
                                             @foreach ($types as $type)
-                                               <option value="{{ $type->id }}"> {{ $type->name }}</option>
-                                           @endforeach 
-                                       </select>
+                                                <option value="{{ $type->id }}"> {{ $type->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col"> 
+                                    <div class="col">
                                         <label for="">موضوع المراسلة</label>
-                                        <input class="form-control form-control-lg" type="text"  name="objet">
+                                        <input class="form-control form-control-lg" type="text" name="objet">
                                     </div>
-                                    
+
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col"> 
-                                        <label for="">الجهة المحول إليها		
+                                    <div class="col">
+                                        <label for="">الجهة المحول إليها
                                         </label>
-                                        <select class="form-control form-control-lg" name="bureau_id" id=""> 
-                                             @foreach ($bureaux as $bureau)
+                                        <select class="form-control form-control-lg" name="bureau_id" id="">
+                                            @foreach ($bureaux as $bureau)
                                                 <option value="{{ $bureau->id }}"> {{ $bureau->name }}</option>
-                                            @endforeach 
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <label for="">تاريخ التحويل	    </label>
-                                        <input class="form-control form-control-lg" type="date"  name="date_transfert"> 
-                                    </div> 
+                                        <label for="">تاريخ التحويل </label>
+                                        <input class="form-control form-control-lg" type="date" name="date_transfert">
+                                    </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col"> 
-                                        <div class="custom-control custom-checkbox" style="padding: 2.5rem 0 2rem 1.5rem;">
-                                            <input class="custom-control-input" type="checkbox" id="customCheckbox11" name="obligation_repanse" value="1" checked="">
-                                            <label for="customCheckbox11" class="custom-control-label">وجوب الرد على المراسلة ؟</label>
-                                          </div>
+                                    <div class="col">
+                                        <div class="custom-control custom-checkbox"
+                                            style="padding: 2.5rem 0 2rem 1.5rem;">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox11"
+                                                name="obligation_repanse" value="1" checked="">
+                                            <label for="customCheckbox11" class="custom-control-label">وجوب الرد على
+                                                المراسلة ؟</label>
+                                        </div>
                                         {{-- <input class="form-control form-control-lg" type="text"  name="obligation_repanse">  --}}
                                     </div>
                                     <div class="col">
                                         <div id="datelbl1">
                                             <label for="">تاريخ الرد</label>
-                                            <input class="form-control form-control-lg" type="date"  name="date_reponse" id="datepickerresponse1">
+                                            <input class="form-control form-control-lg" type="date"
+                                                name="date_reponse" id="datepickerresponse1">
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="col">
                                         <label for="" for="chooseFile">ملف المراسلة</label>
-                                        <input class="form-control form-control-lg" type="file" name="file" id="chooseFile"> 
+                                        <input class="form-control form-control-lg" type="file" name="file"
+                                            id="chooseFile">
                                     </div>
                                 </div>
 
                                 <br>
                                 <br>
-                                
+
                                 <button type="submit" class="btn btn-primary">إضــافة</button>
- 
+
                             </form>
 
                         </div>
@@ -464,7 +485,7 @@
     <script src="{{ URL::asset('/assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ URL::asset('/assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ URL::asset('/assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script> 
+    <script src="{{ URL::asset('/assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ URL::asset('/assets/dist/js/adminlte.min.js') }}"></script>
@@ -473,96 +494,153 @@
     <script>
         $(function() {
             $("#example1").DataTable({
+                
+                "info": false,
+                "paging": false,
+                "searching": false,
+                "ordering": true,
+                "info": true, 
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
-        });
-        function showAdd(){
             
-    event.preventDefault();
-    jQuery.noConflict();
+        });
+        $('#fltr_type').removeAttr('selected').find('option:first').attr('selected', 'selected');
+        function filter_type(selector) {
+                
+            event.preventDefault();
+                 var id = $(selector).val();
+
+                $.ajax({
+                    url: '/filter_typ_arrv/'+id,
+                    type: 'GET',
+                    dataType: 'json', 
+                    success: function(data) {
+                        $('#results').empty(); 
+
+                        $.each(data, function(index, arrivee) {
+                            var html =
+                            '<tr id="arivee_'+ arrivee.id +'" >'+
+                                   '<td>'+ arrivee.Num_courie +'</td>'+
+                                   '<td>'+ arrivee.emetteur +'</td>'+
+                                   '<td>'+ arrivee.date_envoi +'</td> '+
+                                   '<td>'+ arrivee.objet +'</td>'+
+                                   '<td data-typeid="'+ arrivee.type_id +'">'+ arrivee.typename +'</td>'+
+                                    '<td data-bureauid="'+ arrivee.bureau_id +'">'+  arrivee.bureauname +'</td> '+
+                                        '<td>'+ arrivee.date_transfert +'</td>'+
+                                            '<td>'+ 
+                                          ((arrivee.obligation_repanse == 1) ? '<small class="badge badge-warning"> نعم</small>' :'<small class="badge badge-secondary"> لا</small>') +
+                                       
+
+                                        '</td>'+
+
+                                    '<td>'+ arrivee.date_reponse +'</td>'+
+                                        '<td> '+
+                                        '<a class="btn btn-success btn-sm" onclick="showpdf(this);" '+
+                                        'href="javascript:void(0);"'+
+                                        'data-path="{{  asset(Storage::url(  "arrivee/" )) }}/'+arrivee.fichier+ '"> '+
+                                        '<i class="fas fa-file"> </i> عرض'+
+                                            '</a>'+
+                                            '<a class="btn btn-info btn-sm" onclick="showEdit('+ arrivee.id +')"'+
+                                                'id="btn_edit"> <i class="fas fa-pencil-alt"> </i> Edit </a>'+
+                                            '<a class="btn btn-danger btn-sm" onclick="showDelete('+ arrivee.id +')"'+
+                                                'id="btn_delete"> <i class="fas fa-trash"> </i> Delete </a>'+
+                                            '</td>'+
+ 
+                                            '</tr>';
+
+                            $('#results').append(html);
+                        });
+
+                        // $('#pagination').html(data.links);
+                    }
+                });
+            }
+        function showAdd() {
+
+            event.preventDefault();
+            jQuery.noConflict();
             $('#modal-lg').modal('show');
         }
+
         function showEdit(id) {
 
             event.preventDefault();
-    jQuery.noConflict();
-        // console.log('--'+$('#arivee_'+id).children().eq(5)); 
-        // console.log('--'+$('#arivee_'+id).children().eq(5).data('formatioid'));
-        var form = document.getElementById("update_frm");
-        var action ="{{ route('cour_arrivee.update',"") }}/"+id;
-        form.action = action;
-        // $('#edit_mdl #update_frm').attr("action",action);
-        
-        $('#edit_mdl input[name="id"]').val(id); 
-        $('#edit_mdl input[name="Num_courie"]').val($('#arivee_' + id).children().eq(0).html()); 
-        $('#edit_mdl input[name="emetteur"]').val($('#arivee_' + id).children().eq(1).html());
-        $('#edit_mdl input[name="date_envoi"]').val($('#arivee_' + id).children().eq(2).html());
-        // $('#edit_mdl input[name="envoye_a"]').val($('#arivee_' + id).children().eq(3).html());
-        
-        $('#edit_mdl input[name="objet"]').val($('#arivee_' + id).children().eq(3).html()); 
-        $('#edit_mdl #typeid').val($('#arivee_' + id).children().eq(4).data('typeid'));
-        $('#edit_mdl #bureauid').val($('#arivee_' + id).children().eq(5).data('bureauid'));
-        $('#edit_mdl input[name="date_transfert"]').val($('#arivee_' + id).children().eq(6).html());
-        
-        $('#edit_mdl input[name="obligation_repanse"]').val($('#arivee_' + id).children().eq(7).html()); 
-        $('#edit_mdl input[name="date_reponse"]').val($('#arivee_' + id).children().eq(8).html());
-        $('#edit_mdl input[name="file"]').data($('#arivee_' + id).children().eq(9).html()); 
-        // $('#edit_mdl input[name="objet"]').val($('#arivee_' + id).children().eq(5).data('formatioid'));
-        $('#edit_mdl').modal('show');
-        }
-    //    Num_courie emetteur date_envoi envoye_a objet nature tranfere_a date_transfert obligation_repanse date_reponse file
-        function showDelete(id) {  
-            
-    event.preventDefault();
-    jQuery.noConflict();
-        var form = document.getElementById("destroy_frm");
-        var action ="{{ route('cour_arrivee.destroy',"") }}/"+id;
-        form.action = action;
-        $('#delete_mdl #arrivee_id').val($('#arivee_' + id).children().eq(0).html());
+            jQuery.noConflict();
+            // console.log('--'+$('#arivee_'+id).children().eq(5)); 
+            // console.log('--'+$('#arivee_'+id).children().eq(5).data('formatioid'));
+            var form = document.getElementById("update_frm");
+            var action = "{{ route('cour_arrivee.update', '') }}/" + id;
+            form.action = action;
+            // $('#edit_mdl #update_frm').attr("action",action);
 
-        $('#delete_mdl').modal('show');
+            $('#edit_mdl input[name="id"]').val(id);
+            $('#edit_mdl input[name="Num_courie"]').val($('#arivee_' + id).children().eq(0).html());
+            $('#edit_mdl input[name="emetteur"]').val($('#arivee_' + id).children().eq(1).html());
+            $('#edit_mdl input[name="date_envoi"]').val($('#arivee_' + id).children().eq(2).html());
+            // $('#edit_mdl input[name="envoye_a"]').val($('#arivee_' + id).children().eq(3).html());
+
+            $('#edit_mdl input[name="objet"]').val($('#arivee_' + id).children().eq(3).html());
+            $('#edit_mdl #typeid').val($('#arivee_' + id).children().eq(4).data('typeid'));
+            $('#edit_mdl #bureauid').val($('#arivee_' + id).children().eq(5).data('bureauid'));
+            $('#edit_mdl input[name="date_transfert"]').val($('#arivee_' + id).children().eq(6).html());
+
+            $('#edit_mdl input[name="obligation_repanse"]').val($('#arivee_' + id).children().eq(7).data('obligation_repance'));
+            $('#edit_mdl input[name="date_reponse"]').val($('#arivee_' + id).children().eq(8).html());
+            $('#edit_mdl input[name="file"]').data($('#arivee_' + id).children().eq(9).html());
+            // $('#edit_mdl input[name="objet"]').val($('#arivee_' + id).children().eq(5).data('formatioid'));
+            $('#edit_mdl').modal('show');
+        }
+        //    Num_courie emetteur date_envoi envoye_a objet nature tranfere_a date_transfert obligation_repanse date_reponse file
+        function showDelete(id) {
+
+            event.preventDefault();
+            jQuery.noConflict();
+            var form = document.getElementById("destroy_frm");
+            var action = "{{ route('cour_arrivee.destroy', '') }}/" + id;
+            form.action = action;
+            $('#delete_mdl #arrivee_id').val($('#arivee_' + id).children().eq(0).html());
+
+            $('#delete_mdl').modal('show');
         }
 
-        function showpdf(link){
-            
-    event.preventDefault();
-    jQuery.noConflict();
-            var path=$(link).data("path");
-            $("#showpdfmodal #showmodaliframe").attr("src",path) ;
-            $("#showpdfmodal #file_title").html(path);                                                                                   
-            
+        function showpdf(link) {
+
+            event.preventDefault();
+            jQuery.noConflict();
+            var path = $(link).data("path");
+            $("#showpdfmodal #showmodaliframe").attr("src", path);
+            $("#showpdfmodal #file_title").html(path);
+
             $("#showpdfmodal").modal("show");
-        } 
-           
+        }
     </script>
     <script>
-        $(document).ready(function(){
-            $("#customCheckbox1").click(function(){
+        $(document).ready(function() {
+            $("#customCheckbox1").click(function() {
                 // $("#datepickerresponse").toggle('fast',()=>{$("#datepickerresponse").attr( "disabled", false )});
-                $("#datelbl").toggle('fast',()=>{$("#datelbl").attr( "disabled", false )});
-            }); 
-         
+                $("#datelbl").toggle('fast', () => {
+                    $("#datelbl").attr("disabled", false)
+                });
+            });
+
         });
-        </script>
+    </script>
     <script>
-        $(document).ready(function(){
-            $("#customCheckbox11").click(function(){
+        $(document).ready(function() {
+            $("#customCheckbox11").click(function() {
                 // $("#datepickerresponse1").toggle('fast',()=>{$("#datepickerresponse1").attr( "disabled", false )});
-                $("#datelbl1").toggle('fast',()=>{$("#datelbl1").attr( "disabled", false )});
-            });  
-         
+                $("#datelbl1").toggle('fast', () => {
+                    $("#datelbl1").attr("disabled", false)
+                });
+            });
+
         });
-        </script>
+    </script>
+    <script> 
+           
+ 
+    </script>
 @endsection

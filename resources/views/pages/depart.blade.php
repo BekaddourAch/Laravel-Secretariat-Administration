@@ -210,7 +210,7 @@
                 </button>
             </div>
             <div class="modal-body"> 
-                {{ $depart->fichier  }}
+                {{-- {{ $depart->fichier  }} --}}
                 
                 {{-- <iframe src="{{ asset('cv1_28.pdf') }}" width="50%" height="600">
                     This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('cv1_28.pdf') }}">Download PDF</a>
@@ -231,7 +231,7 @@
 <!-- /.modal -->
                                 {{-- ----------------------------------------------------------------------  ------------------------------------------------------------------------------------- --}}
                                 {{-- ---------------------------------------------------------------------- MODAL DELETE ------------------------------------------------------------------------------------- --}}
-                                <div class="modal fade" id="delete{{ $depart->id }}">
+                                <div class="modal fade" id="destroy_frm">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -247,12 +247,12 @@
                                                         <h3 class="card-title">Supprimer une depart</h3>
                                                     </div>
                                                     <div class="card-body">
-                                                        <form action="{{ route('cour_depart.destroy', $depart->id) }}"
+                                                        <form action=""
                                                             method="POST" enctype="multipart/form-data"> @csrf
                                                             @csrf_field {{ method_field('delete') }}
 
                                                             <input class="form-control form-control-lg" type="hidden"
-                                                                value="{{ $depart->id }}" name="id" id="depart_id">
+                                                                value="" name="id" id="depart_id">
                                                             <br>
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         </form>

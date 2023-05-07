@@ -47,6 +47,7 @@ Route::post('parameters/store-type', [ParamsController::class,'storeType']);
 Route::post('parameters/store-bureau', [ParamsController::class,'storeBureau']);
 Route::delete('parameters/delete-type/{id}', [ParamsController::class,'deleteType']); 
 Route::delete('parameters/delete-bureau/{id}', [ParamsController::class,'deleteBureau']);
+Route::get('filter_typ_arrv/{id}', [ArriveController::class,'filterPerType']);
 // Route::resource('parameters', ParamsController::class);
 
 

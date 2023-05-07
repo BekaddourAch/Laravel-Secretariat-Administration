@@ -7,6 +7,7 @@ use App\Models\Bureau;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
@@ -20,7 +21,7 @@ class ArriveController extends Controller
      */
     public function index()
     {
-        $arrivees=Arrivee::all();
+        $arrivees=Arrivee::paginate(5);
         $bureaux=Bureau::all();
         $types=Type::all();
         return view('pages.arrivee', compact('arrivees','bureaux','types'));
@@ -179,5 +180,20 @@ class ArriveController extends Controller
         $arrivee->delete();
         toastr()->success('تم حذف الملف بنجاح');
         return redirect()->back();
+    }
+    public function filterPerType($id)
+    { 
+        if($id==0){
+            $arrivees = Arrivee::join('types', 'types.id', '=', 'arrivees.type_id')
+            ->join('bureaus', 'bureaus.id', '=', 'arrivees.bureau_id')
+            ->select(DB::raw('arrivees.*,types.name as typename,bureaus.name as bureauname'))->paginate(5); 
+        }else{
+            $arrivees = Arrivee::where("type_id", $id)
+            ->join('types', 'types.id', '=', 'arrivees.type_id')
+            ->join('bureaus', 'bureaus.id', '=', 'arrivees.bureau_id')
+            ->select(DB::raw('arrivees.*,types.name as typename,bureaus.name as bureauname'))->paginate(5);
+        }
+        
+        return response()->json($arrivees, 200); 
     }
 }

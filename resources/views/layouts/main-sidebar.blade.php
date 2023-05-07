@@ -4,7 +4,7 @@
      <a href="{{ url('/') }}" class="brand-link" style="height: 200px;">
          <img src="{{ URL::asset('/assets/dist/img/opgi.png') }}" alt=""
              class="brand-image img-circle elevation-3" style="opacity: 1; display: block;margin: auto;width: 100px;max-height: 100px;float:none">
-         <span class="brand-text font-weight-light" style="display: block;margin: auto;text-align: center;">OPGI GHARDAIA</span>
+         <span class="brand-text font-weight-light" style="display: block;margin: auto;text-align: center;"> Secretariat MS</span>
      </a>
 
      <!-- Sidebar -->
@@ -16,7 +16,7 @@
                      alt="User Image">
              </div>
              <div class="info">
-                 <a href="#" class="d-block">SECRITARIAT DG</a>
+                 <a href="#" class="d-block">Welcome Achraf</a>
              </div>
          </div>
 
